@@ -14,4 +14,4 @@ My classwork from WI25 [BIMM143](https://bioboot.github.io/bimm143_W25/) at UC S
 
 - Class09 [Halloween Candy Mini-porject](Class09/Class09-Halloween-Candy-Mini-Project.pdf)
 
-
+- Class14[RNA-Seq mini project](Class 14/Class 14.html)
