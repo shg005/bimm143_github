@@ -12,12 +12,22 @@ My classwork from WI25 [BIMM143](https://bioboot.github.io/bimm143_W25/) at UC S
 
 - Class08 [Unsupervised learning mini-project](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/Class%208/class07_mini_project.html) 
 
-- Class09 [Halloween Candy Mini-porject](https://htmlpreview.github.io/?Class09/Class09-Halloween-Candy-Mini-Project.pdf)
+- Class09 [Halloween Candy Mini-porject](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/Class09/Class09%20Halloween%20Candy%20Mini%20Project.html)
 
-- Class14[RNA-Seq mini project](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/Class%2014/Class%2014.html)
+- Class11 []()
 
-- Class12 [Genome informatics and high throughput sequencing](https://htmlpreview.github.io/?)
+- Class12 [Genome informatics and high throughput sequencing](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/Class12/Class12.html)
   
 - Class13 [Transcriptomics, RNA-Seq analysis, and the interpretation of gene lists](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/Class%2013/Class%2013.html)
 
 - Class14 [RNA-Seq mini project](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/Class%2014/Class%2014.html)
+
+- Class15
+
+- Class16
+
+- Class17
+
+- Class18
+
+- Class19
