@@ -15,3 +15,9 @@ My classwork from WI25 [BIMM143](https://bioboot.github.io/bimm143_W25/) at UC S
 - Class09 [Halloween Candy Mini-porject](https://htmlpreview.github.io/?Class09/Class09-Halloween-Candy-Mini-Project.pdf)
 
 - Class14[RNA-Seq mini project](Class 14/Class 14.html)
+
+- Class12 [Genome informatics and high throughput sequencing]()
+  
+- Class13 [Transcriptomics, RNA-Seq analysis, and the interpretation of gene lists]()
+
+- Class14 [RNA-Seq mini project]()
