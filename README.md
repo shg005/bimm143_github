@@ -12,5 +12,6 @@ My classwork from WI25 [BIMM143](https://bioboot.github.io/bimm143_W25/) at UC S
 
 - Class08 [Unsupervised learning mini-project]() 
 
+- Class09 [Halloween Candy Mini-porject](Class09/Class09-Halloween-Candy-Mini-Project.pdf)
 
 
