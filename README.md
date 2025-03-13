@@ -24,7 +24,7 @@ My classwork from WI25 [BIMM143](https://bioboot.github.io/bimm143_W25/) at UC S
 
 - Class16 [Essential UNIX for bioinformatics](class16/mynotes.txt)
 
-- Class17 [Analyzing sequencing data in the cloud](https://htmlpreview.github.io/?)
+- Class17 [Analyzing sequencing data in the cloud](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/class17/class17.html)
 
 - Class18 [Investigating pertussis resurgence mini project](https://htmlpreview.github.io/?)
 
