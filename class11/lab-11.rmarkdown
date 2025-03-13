@@ -1,0 +1,393 @@
+---
+title: "AlphaFold Analysis"
+author: "Jessica Gao PID:A16939806"
+format: html
+---
+
+
+
+![Superimposed image of HIV monomer](superimposed_monomer_variant.png)
+
+
+Here we analyze our AlphaFold structure prediction models. The input directory/folder comes from the ColabFold serve: 
+
+
+
+```{r}
+results_dir <- "monomer_94b5b"
+```
+
+```{r}
+pdb_files <- list.files(path=results_dir,
+                        pattern="*.pdb",
+                        full.names = TRUE)
+basename(pdb_files)
+```
+
+
+
+I will use the Bio3D package for analysis
+
+
+```{r}
+library(bio3d)
+```
+
+
+
+align and superpose
+
+
+
+```{r}
+pdbs <- pdbaln(pdb_files, fit=TRUE, exefile="msa")
+pdbs
+```
+
+```{r}
+pc <- pca(pdbs)
+plot(pc)
+```
+
+
+
+## RMSD analysis
+RMSD is a common measure of structural distance used in strutural biology
+
+
+
+```{r}
+rd <- rmsd(pdbs, fit=T)
+```
+
+```{r}
+library(pheatmap)
+
+colnames(rd) <- paste0("m",1:5)
+rownames(rd) <- paste0("m",1:5)
+pheatmap(rd)
+```
+
+
+
+## Using my gene of interest: find a gene project gene
+
+
+
+```{r}
+gene_int <- "find_a_gene_46bbf"
+```
+
+```{r}
+pdb_int <- list.files(path=gene_int,
+                        pattern="*.pdb",
+                        full.names = TRUE)
+basename(pdb_int)
+```
+
+```{r}
+library(bio3d)
+```
+
+```{r}
+pdb_find <- pdbaln(pdb_int, fit=TRUE, exefile="msa")
+pdb_find
+```
+
+```{r}
+pc_find <- pca(pdb_find)
+plot(pc_find)
+```
+
+```{r}
+rd_find <- rmsd(pdb_find, fit=T)
+```
+
+```{r}
+library(pheatmap)
+
+colnames(rd_find) <- paste0("m",1:5)
+rownames(rd_find) <- paste0("m",1:5)
+pheatmap(rd_find)
+```
+
+```{r}
+# Read a reference PDB structure
+pdb_ref <- read.pdb("1hsg")
+```
+
+```{r}
+plotb3(pdb_find$b[1,], typ="l", lwd=2, sse=pdb_ref)
+points(pdb_find$b[2,], typ="l", col="red")
+points(pdb_find$b[3,], typ="l", col="blue")
+points(pdb_find$b[4,], typ="l", col="darkgreen")
+points(pdb_find$b[5,], typ="l", col="orange")
+abline(v=100, col="gray")
+```
+
+```{r}
+core_find <- core.find(pdb_find)
+```
+
+```{r}
+core.inds_find <- print(core_find, vol=0.5)
+```
+
+```{r}
+abg <- pdbfit(pdb_find, core.inds_find, outpath="corefit_structures")
+```
+
+
+
+![Find a gene sequence view superimposed](find_superimposed_variant.png)
+
+
+
+```{r}
+rf <- rmsf(abg)
+
+plotb3(rf, sse=pdb_find)
+abline(v=100, col="gray", ylab="RMSF")
+```
+
+```{r}
+library(jsonlite)
+
+# Listing of all PAE JSON files
+pae_files_find <- list.files(path=results_dir,
+                        pattern=".*model.*\\.json",
+                        full.names = TRUE)
+```
+
+```{r}
+pae2 <- read_json(pae_files_find[2],simplifyVector = TRUE)
+pae4 <- read_json(pae_files_find[4],simplifyVector = TRUE)
+
+attributes(pae2)
+```
+
+```{r}
+head(pae2$plddt) 
+```
+
+```{r}
+pae2$max_pae
+```
+
+```{r}
+pae4$max_pae
+```
+
+```{r}
+plot.dmat(pae2$pae, 
+          xlab="Residue Position (i)",
+          ylab="Residue Position (j)")
+```
+
+```{r}
+plot.dmat(pae4$pae, 
+          xlab="Residue Position (i)",
+          ylab="Residue Position (j)",
+          grid.col = "black",
+          zlim=c(0,30))
+```
+
+```{r}
+plot.dmat(pae2$pae, 
+          xlab="Residue Position (i)",
+          ylab="Residue Position (j)",
+          grid.col = "black",
+          zlim=c(0,30))
+```
+
+```{r}
+aln_file <- list.files(path=gene_int,
+                       pattern=".a3m$",
+                        full.names = TRUE)
+aln_file
+```
+
+```{r}
+aln <- read.fasta(aln_file[1], to.upper = TRUE)
+```
+
+```{r}
+dim(aln$ali)
+```
+
+
+
+## HIV Dimer Analysis 
+
+
+![Superimposed image of HIV dimer](superimposed_dimer_variant.png)
+
+
+
+```{r}
+results_dimer <- "hivpr_dimer_23119"
+```
+
+```{r}
+pdb_dimer <- list.files(path=results_dimer,
+                        pattern="*.pdb",
+                        full.names = TRUE)
+basename(pdb_dimer)
+```
+
+```{r}
+library(bio3d)
+```
+
+```{r}
+pdb_dimer_f <- pdbaln(pdb_dimer, fit=TRUE, exefile="msa")
+pdb_dimer_f
+```
+
+```{r}
+pc_dimer_f <- pca(pdb_dimer_f)
+plot(pc_dimer_f)
+```
+
+```{r}
+rd_dimer <- rmsd(pdb_dimer_f, fit=T)
+range(rd_dimer)
+```
+
+```{r}
+library(pheatmap)
+
+colnames(rd_dimer) <- paste0("m",1:5)
+rownames(rd_dimer) <- paste0("m",1:5)
+pheatmap(rd_dimer)
+```
+
+```{r}
+pdb_ref <- read.pdb("1hsg")
+```
+
+```{r}
+plotb3(pdb_dimer_f$b[1,], typ="l", lwd=2, sse=pdb_ref)
+points(pdb_dimer_f$b[2,], typ="l", col="red")
+points(pdb_dimer_f$b[3,], typ="l", col="blue")
+points(pdb_dimer_f$b[4,], typ="l", col="darkgreen")
+points(pdb_dimer_f$b[5,], typ="l", col="orange")
+abline(v=100, col="gray")
+```
+
+```{r}
+core <- core.find(pdb_dimer_f)
+```
+
+```{r}
+core.inds <- print(core, vol=0.5)
+```
+
+```{r}
+xyz <- pdbfit(pdb_dimer_f, core.inds, outpath="corefit_structures")
+```
+
+
+
+![Core superimposed structure of dimer, colored by uncerntainty and disorder](superimposed_dimer_variant_coloring.png)
+
+
+
+```{r}
+rf <- rmsf(xyz)
+
+plotb3(rf, sse=pdb_dimer_f)
+abline(v=100, col="gray", ylab="RMSF")
+```
+
+
+
+## Predicted alignment error for domains
+
+
+
+```{r}
+library(jsonlite)
+
+# Listing of all PAE JSON files
+pae_files <- list.files(path=results_dimer,
+                        pattern=".*model.*\\.json",
+                        full.names = TRUE)
+```
+
+```{r}
+pae1 <- read_json(pae_files[1],simplifyVector = TRUE)
+pae5 <- read_json(pae_files[5],simplifyVector = TRUE)
+
+attributes(pae1)
+```
+
+```{r}
+
+head(pae1$plddt) 
+```
+
+```{r}
+pae1$max_pae
+```
+
+```{r}
+pae5$max_pae
+```
+
+```{r}
+plot.dmat(pae1$pae, 
+          xlab="Residue Position (i)",
+          ylab="Residue Position (j)")
+```
+
+```{r}
+plot.dmat(pae5$pae, 
+          xlab="Residue Position (i)",
+          ylab="Residue Position (j)",
+          grid.col = "black",
+          zlim=c(0,30))
+```
+
+```{r}
+plot.dmat(pae1$pae, 
+          xlab="Residue Position (i)",
+          ylab="Residue Position (j)",
+          grid.col = "black",
+          zlim=c(0,30))
+```
+
+
+## Residue conservaion from alignment file
+
+
+
+```{r}
+aln_file <- list.files(path=results_dimer,
+                       pattern=".a3m$",
+                        full.names = TRUE)
+aln_file
+```
+
+```{r}
+aln <- read.fasta(aln_file[1], to.upper = TRUE)
+```
+
+```{r}
+dim(aln$ali)
+```
+
+```{r}
+sim <- conserv(aln)
+```
+
+```{r}
+plotb3(sim[1:99], sse=trim.pdb(pdb_ref, chain="A"),
+       ylab="Conservation Score")
+```
+
+```{r}
+con <- consensus(aln, cutoff = 0.9)
+con$seq
+```
+
