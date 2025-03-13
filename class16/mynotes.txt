@@ -1,0 +1,10 @@
+This is just a basic text editor called "nano" that is available on nearly all computers.
+Key: UNIX cmds indlue:
+pwd: print working directory (where are we?)
+ls: list files and directories
+cd: change Dir (change directory)
+path:
+mkdip/mkdir: make a directory
+rm: deletes everything make sure to check you're in the right file. 
+
+
