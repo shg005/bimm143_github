@@ -1,0 +1,230 @@
+---
+title: "Class 7: Machine Learning 1"
+author: "Jessica Gao (PID:A16939806)"
+format: pdf
+---
+
+Today we will explore unsupervised machine learning methods including clustering and dimensionality reduction methods.
+
+Let's start by making up some data (where we know there are clear groups) that we can use to test out different clustering methods. 
+
+We can use the 'rnorm()' function to help us here
+```{r}
+hist(rnorm(n=3000, mean=3))
+```
+
+
+make data with two "clusters" 
+
+```{r}
+x <- c( rnorm(30, mean=-3),
+        rnorm(30, mean=+3))
+
+z <- cbind(x=x, y=rev(x))
+head(z)
+
+#cbind = column binding
+
+plot(z)
+```
+How big is 'z'
+```{r}
+nrow(z)
+ncol(z)
+```
+
+
+## K-mean clustering
+
+The main function in "base" R for k-means clustering is called 'kmeans()'
+```{r}
+k <- kmeans(z, centers=2)
+#output: clustering with 2 clusters, because centers is set equal to 2
+#cluster means: +3 and -3, this was set for z in the cbind() function above
+k
+```
+
+```{r}
+attributes(k)
+```
+>Q. How many points lie in each cluster?
+
+```{r}
+k$size
+```
+
+>Q. What component of our results tell us about the cluster membership (i.e. which point likes in which cluster)
+
+```{r}
+k$cluster
+```
+>Q. Center of each cluster?
+
+```{r}
+k$centers
+```
+
+>Q. Put this result info together and make a little "base R" plot of our clustering result. Alos add teh cluster center points to this plot.
+
+```{r}
+plot(z, col="blue")
+```
+
+```{r}
+plot(z, col=c("blue","red"))
+```
+
+You can color by number
+```{r}
+plot(z, col=c(1,2))
+```
+
+Plot colored by cluster membership:
+
+```{r}
+plot(z, col=k$cluster)
+points(k$centers, col="blue", pch=15)
+```
+
+>Q. Run kmeans on our input 'z' and define 4 clusters making the same results visualization plot as above (pot of z collored by cluster membership).
+
+```{r}
+k4 <- kmeans(z, centers=4)
+plot(z, col=k4$cluster)
+
+```
+```{r}
+plot(z, col=k4$cluster)
+points(k4$centers, col="blue", pch=15)
+```
+
+
+Best clusters have the smallest ss value. More clusters = smaller ss value, you want the elbow point.
+
+## Hierchical clustering
+
+The main function in base R for this called 'hclust()' it will take as input a distance matrix (key point is that you can't just give your "raw" data as input - you have to first calculate a distance matrix from your data).
+
+```{r}
+d <- dist(z)
+hc <- hclust(d)
+hc
+```
+
+```{r}
+plot(hc)
+abline(h=10, col="red")
+```
+all the number below 30 is on one side, and above 30 on the other side
+Tells you how far apart each value is from each other, the closer ones to each other are clustered together. 
+
+Once I inspect the "tree" I can "cut" the tree to yield my groupings or clusters. The function to this is called 'cutree()'
+
+```{r}
+grps <- cutree(hc, h=10) 
+```
+
+```{r}
+plot(z, col=grps)
+```
+
+## Hands on with Principal Component Analysis (PCA)
+
+Let's examine some silly 17-dimensional data detailing food consumption in the UK (England, Scotland, Wales, and N. Ireland). Are these countries eating habits different or similar and if so how?
+
+###Data import
+
+```{r}
+url <- "https://tinyurl.com/UK-foods"
+x <- read.csv(url, row.names=1)
+x
+```
+> Q2. Which approach to solving the ‘row-names problem’ mentioned above do you prefer and why? Is one approach more robust than another under certain circumstances?
+
+row.names=1
+
+> Q1. How many rows and columns are in your new data frame named x? What R functions could you use to answer this questions?
+
+```{r}
+nrow(x)
+ncol(x)
+dim(x) #gives row, column
+```
+
+```{r}
+barplot(as.matrix(x), beside=T, col=rainbow(nrow(x)))
+```
+>Q3. Changing what optional argument in the above barplot() function results in the following plot?
+
+```{r}
+barplot(as.matrix(x), beside=F, col=rainbow(nrow(x)))
+```
+
+>Q5, Generating all pairwise plots may help somewhat. Can you make sense of the following code and resulting figure? What does it mean if a given point lies on the diagonal for a given plot?
+
+```{r}
+pairs(x, col=rainbow(nrow(x)), pch=16)
+```
+
+If the point is in a straight line, then similar amount of similar amounts of that food consumed in both countries.
+
+Looking at these types of "pairwise plots" can be helpful but it does not scale well and kind of sucks! There must be a better way...
+
+>Q6. What is the main differences between N.Ireland and the other countries of the UK in terms of this data-set?
+
+In the upper right graph, there is a dark blue dot that is weighing more in England than in N. Ireland, there is a lighter teal colored dot that is weighing more in N. Ireland than in England. Overall, N.Ireland has more differences when compared to the other countries. 
+
+### PCA to the rescue
+
+The main function for PCA in base R is called 'prcomp()'. This function wants the transpose of our input data - i.e. the important foods in as columns and the countries as rows. 
+
+```{r}
+pca <- prcomp(t(x))
+summary(pca)
+```
+
+Let's see what is in our PCA result object 'pca'
+
+```{r}
+attributes(pca)
+```
+
+The 'pca$x' result object is where we will focus first as this details how the countries are related to each other in terms of our new "axis" (a.k.a. "PCs", "evigenvectors", etc.)
+
+```{r}
+head(pca$x)
+```
+>Q7.Complete the code below to generate a plot of PC1 vs PC2. The second line adds text labels over the data points.
+
+```{r}
+# Plot PC1 vs PC2
+plot(pca$x[,1], pca$x[,2], xlab="PC1", ylab="PC2", xlim=c(-270,500))
+text(pca$x[,1], pca$x[,2], colnames(x))
+```
+
+>Q8.Customize your plot so that the colors of the country names match the colors in our UK and Ireland map and table at start of this document.
+
+```{r}
+plot(pca$x[,1], pca$x[,2], xlab="PC1", ylab="PC2", xlim=c(-270,500))
+text(pca$x[,1], pca$x[,2], colnames(x), col=c("orange", "red", "blue", "darkgreen"))
+```
+
+
+```{r}
+plot(pca$x[,1], pca$x[,2], pch=16, col=c("orange", "red", "blue", "darkgreen"), xlab="PC1", ylab="PC2")
+```
+
+We can look at the so-called PC "loadings" result object to see how the original food contribute to our new PC )i.e. how the original variables contribute to our new better PC variables). Better because they capture more spread. 
+
+```{r}
+pca$rotation[,1]
+```
+
+>Q9. Generate a similar ‘loadings plot’ for PC2. What two food groups feature prominantely and what does PC2 maninly tell us about?
+
+```{r}
+par(mar=c(10, 3, 0.35, 0))
+barplot( pca$rotation[,2], las=2 )
+```
+This plot from PC2 tells us that food with the largest positive loading score is only soft drinks. The food that has the highest negative loading score is only fresh_potatoes. 
+
