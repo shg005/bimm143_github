@@ -1,0 +1,103 @@
+---
+title: "Comparative structure analysis"
+author: "Jessica Gao (PID:16939806)"
+format: html
+---
+
+"install.packages("bio3d")
+install.packages("devtools")
+install.packages("BiocManager")
+
+BiocManager::install("msa")
+devtools::install_bitbucket("Grantlab/bio3d-view")"
+
+>Q10. Which of the packages above is found only on BioConductor and not CRAN?
+
+"msa"
+
+>Q11. Which of the above packages is not found on BioConductor or CRAN?:
+
+"Grantlab/bio3d-view"
+
+>Q12. True or False? Functions from the devtools package can be used to install packages from GitHub and BitBucket?
+
+True
+
+Here we run through a complete "pipeline" of structure analysis that begins with a single sequence identifier and ends in a PCA analysis. 
+
+```{r}
+library(bio3d)
+```
+
+##Step 1. Retrieve sequence
+Retrieve a sequence for the protein we are interested in. We will take ADK "1ake_A"
+
+```{r}
+id <- "1ake_A"
+aa <- get.seq(id)
+aa
+```
+
+>Q13. How many amino acids are in this sequence, i.e. how long is this sequence?
+
+214
+
+##Step 2. Blast search
+Running a BLAST search of the PDB for all related sequences to our input 'aa'
+
+```{r}
+blast <- blast.pdb(aa)
+```
+
+```{r}
+hits <- plot(blast)
+```
+##Step 3. Download
+These are our "top hits" i.e. all the sturctures in the PDB database related to our input sequence. 
+
+```{r}
+hits$pdb.id
+```
+
+```{r}
+files <- get.pdb(hits$pdb.id, path="pdbs", split=TRUE, gzip=TRUE)
+```
+
+Bioconductor has packages for bioinformatics 
+ 
+## Step 4. Align and superpose
+
+```{r}
+pdbs <- pdbaln(files, fit = TRUE, exefile="msa")
+```
+Delete this chunk? too long
+```{r}
+pdbs
+```
+ 
+## Step5. PCA
+
+Use PCA to make sense of these complicated structure relationships. 
+
+```{r}
+pc <- pca(pdbs)
+plot(pc)
+```
+There are three main clusters. 
+
+Make a trajectory (movie) of the main confrontational changes captured by PC1. We will use the 'mktrj()' function for this...
+
+```{r}
+mktrj(pc, file="pca_result.pdb")
+```
+
+Back of the envelope comparasion of the PDB size to UniProt
+
+```{r}
+uniprot <- 253206171
+pdb <- 231029
+pdb/uniprot*100
+```
+
+
+ 
