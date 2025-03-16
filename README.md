@@ -28,4 +28,4 @@ My classwork from WI25 [BIMM143](https://bioboot.github.io/bimm143_W25/) at UC S
 
 - Class18 [Investigating pertussis resurgence mini project](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/class18/class18.html)
 
-- Class19 [](https://htmlpreview.github.io/?)
+- Class19 [](class19/lab19.pdf)
