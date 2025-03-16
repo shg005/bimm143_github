@@ -1,0 +1,37 @@
+---
+title: "Class 19"
+author: "Jessica Gao"
+format: html
+---
+
+```{r}
+library(bio3d)
+```
+
+```{r}
+s <- read.fasta("A16939806_mutant_seq.fa")
+s
+```
+
+## Score conservation per position
+
+```{r}
+score <- conserv(s)
+```
+The sites where amino acids/residues differ are the cancer mutations. 
+
+```{r}
+positions <- which(score !=1)
+```
+
+```{r}
+residues <- s$ali[,positions]
+```
+
+```{r}
+paste(residues[,1], positions, residues[,2], sep = "")
+```
+Read in AlphaFold3 CIF model and export a PDB model for FTMap
+
+
+
