@@ -14,7 +14,7 @@ My classwork from WI25 [BIMM143](https://bioboot.github.io/bimm143_W25/) at UC S
 
 - Class09 [Halloween Candy Mini-porject](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/Class09/Class09%20Halloween%20Candy%20Mini%20Project.html)
 
-- Class11 []()
+- Class11 [Structural Bioinformatics (pt2. Focus on new AlphaFold2)](class11/lab-11.pdf)
 
 - Class12 [Genome informatics and high throughput sequencing](https://htmlpreview.github.io/?https://raw.githubusercontent.com/shg005/bimm143_github/refs/heads/main/Class12/Class12.html)
   
